@@ -1,0 +1,36 @@
+{
+  "@context": "https://www.w3.org/2019/wot/td/v1",
+  "id": "urn:dev:wot:com:example:temperaturesensor",
+  "title": "TemperatureSensor",
+  "description": "A simple temperature sensor",
+  "securityDefinitions": {
+    "no_sec": {
+      "scheme": "nosec"
+    }
+  },
+  "security": ["no_sec"],
+  "properties": {
+    "temperature": {
+      "type": "number",
+      "description": "The current temperature in degrees Celsius",
+      "unit": "celsius",
+      "readOnly": true,
+      "observable": true,
+      "forms": [{
+        "href": "http://example.com/sensor/temperature",
+        "contentType": "application/json"
+      }]
+    },
+    "temperature2": {
+      "type": "number",
+      "description": "NANANA The current temperature in degrees Celsius2",
+      "unit": "fahrenheit",
+      "readOnly": true,
+      "observable": true,
+      "forms": [{
+        "href": "http://example.com/sensor/temperature",
+        "contentType": "application/json"
+      }]
+    }
+  }
+}

@@ -1,6 +1,6 @@
 from manage_json import ManageJSON
-from ngsi_ld.manage_ngsi_ld import ManageNGSILD
-from wot.manage_wot import ManageWoT
+from ngsi_ld.translate_ngsild_to_wot import TranslateNGSILDtoWoT
+from wot.translate_wot_to_ngsild import TranslateWoTtoNGSILD
 
 car = {
     "properties": {
@@ -21,14 +21,19 @@ def main():
     print("Hello from the main function!")
 
 if __name__ == "__main__":
-    manage = ManageJSON(source_metamodel="WoT")
-    # row_data = manage.read_json_file("data/temperatureSensor.td.json")
-    row_data = manage.read_json_file("data/chatNGSILD.json")
-    print(row_data)
-    # translated_data = manage.translate(row_data)
-    # manage.write_json_file(translated_data, "./data/trial.json")
+    manage = ManageJSON()
     
-    manage = ManageNGSILD()
-    simp_data = manage.manage_properties(row_data)
+    # from WoT to NGSILD
+    row_data = manage.read_json_file("data/temperatureSensor.td.json")
+    print(row_data)
+    manage = TranslateWoTtoNGSILD(row_data)
+    simp_data = manage.translate_from_wot_to_ngsild()
+    
+    # # from NGSILD to WoT
+    # row_data = manage.read_json_file("data/chatNGSILD.json")
+    # print(row_data)
+    # manage = TranslateNGSILDtoWoT(row_data)
+    # simp_data = manage.translate_from_ngsild_to_wot()
+    
     print(simp_data)
     main()

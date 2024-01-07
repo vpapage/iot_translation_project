@@ -1,0 +1,24 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:dev:wot:com:example:smokedetector",
+    "title": "SmokeDetector",
+    "description": "A device that reports the presence of smoke",
+    "securityDefinitions": {
+        "no_sec": {
+          "scheme": "nosec"
+        }
+      },
+    "security": ["no_sec"],
+    "properties": {
+      "smokeDetected": {
+        "type": "boolean",
+        "description": "True if smoke is detected, false otherwise",
+        "readOnly": true,
+        "observable": true,
+        "forms": [{
+          "href": "http://example.com/device/smokedetector/smokeDetected",
+          "contentType": "application/json"
+        }]
+      }
+    }
+  }

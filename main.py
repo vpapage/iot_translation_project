@@ -21,19 +21,21 @@ def main():
     print("Hello from the main function!")
 
 if __name__ == "__main__":
-    manage = ManageJSON()
+    manage_file = ManageJSON()
     
     # from WoT to NGSILD
-    row_data = manage.read_json_file("data/temperatureSensor.td.json")
+    row_data = manage_file.read_json_file("data/temperatureSensor.td.json")
     print(row_data)
-    manage = TranslateWoTtoNGSILD(row_data)
-    simp_data = manage.translate_from_wot_to_ngsild()
+    translate_model = TranslateWoTtoNGSILD(row_data)
+    simp_data = translate_model.translate_from_wot_to_ngsild()
+    manage_file.write_json_file(simp_data, "data/results/ngsild_temperatureSensor.json")
     
     # # from NGSILD to WoT
-    # row_data = manage.read_json_file("data/chatNGSILD.json")
+    # row_data = translate_model.read_json_file("data/chatNGSILD.json")
     # print(row_data)
-    # manage = TranslateNGSILDtoWoT(row_data)
-    # simp_data = manage.translate_from_ngsild_to_wot()
-    
+    # translate_model = TranslateNGSILDtoWoT(row_data)
+    # simp_data = translate_model.translate_from_ngsild_to_wot()
+    # manage_file.write_json_file(simp_data, "data/results/wot_temperatureSensor.td.json")
+
     print(simp_data)
     main()

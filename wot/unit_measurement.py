@@ -21,5 +21,5 @@ units = {
     # Other Common Units
     "Percentage": ['%', ],
     "Angle": ['degrees', 'radians'],
-    "Concentration": ['parts per million' (ppm), 'parts per billion' (ppb)], 
+    "Concentration": ['parts per million, ppm', 'parts per billion, ppb'], 
 }

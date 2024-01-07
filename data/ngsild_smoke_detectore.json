@@ -1,0 +1,16 @@
+{
+  "id": "urn:ngsi-ld:SmokeDetector:001",
+  "type": "SmokeDetector",
+  "smokeDetected": {
+    "type": "Property",
+    "value": false,
+    "observedAt": "2021-09-21T12:34:56Z"
+  },
+  "@context": [
+    "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+    {
+      "SmokeDetector": "http://example.org/SmokeDetector",
+      "smokeDetected": "http://example.org/smokeDetected"
+    }
+  ]
+}

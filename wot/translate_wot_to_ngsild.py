@@ -13,6 +13,7 @@ class TranslateWoTtoNGSILD():
         #     "unitCode": "CEL",
         #     "observedAt": "2023-12-24T12:00:00Z"
         #     },
+        # # is location necessary ??
         "location": {
             "type": "GeoProperty",
             "value": {
@@ -24,11 +25,11 @@ class TranslateWoTtoNGSILD():
     
     def __init__(self, data):
         self.data = data 
-        self.id = data.get("id")
-        self.title = data.get("title")
-        self.description = data.get("description")
     
     def translate_value(self, prop_type, prop_unit):
+        """ Work In Progress!  
+        This function should detect a range of values and return the appropriate values back.
+        """
         print(prop_type, prop_unit)
         return "value", "unitCode"
     
@@ -47,17 +48,27 @@ class TranslateWoTtoNGSILD():
                     }
     
     def translate_from_wot_to_ngsild(self):
-        self.manage_properties()
+        """ The real translation """
+        
+        # id manipulation and generic info
+        wot_id = self.data.get("id")
+        parts = wot_id.split(":")
+        title = parts[-2]
+        id_num = parts[-1]
+        
         self.ngsi_ld_data.update(
             {
-                "id": self.id,
-                "type": self.title,
+                "id": f"urn:ngsi-ld:{title}:{id_num}",
+                "type": self.data.get("title"),
                 "name": {
                     "type": "Text",
-                    "value": self.description
-                
-                    },
-                }
-            )
+                    "value": self.data.get("description"),
+                },
+            }
+        )
+        
+        # add properties to the default dictionary
+        self.manage_properties()
+        
         return self.ngsi_ld_data
         

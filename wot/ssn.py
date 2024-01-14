@@ -29,8 +29,19 @@ class Sensor(PhysicalObject):
 
 
 class SensingDevice(Device, Sensor):
+     
+    def __init__(self):
+        self.rdf = "smtg"
     
     def show_element(self):
         print("SensingDevice")
 
 
+# ---------------------------------------------- #
+
+
+class SSN:
+    
+    def __init__(self):
+        self.sensingDevice = SensingDevice()
+        

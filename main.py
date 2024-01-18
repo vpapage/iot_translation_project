@@ -1,6 +1,6 @@
 from manage_json import ManageJSON
-from ngsi_ld.translate_ngsild_to_wot import TranslateNGSILDtoWoT
-from wot.translate_wot_to_ngsild import TranslateWoTtoNGSILD
+from semantic_translation.translate_ngsild_to_wot import TranslateNGSILDtoWoT
+from semantic_translation.translate_wot_to_ngsild import TranslateWoTtoNGSILD
 
 car = {
     "properties": {

@@ -1,3 +1,5 @@
+from unit_measurement import unitCode
+
 class TranslateWoTtoNGSILD():
     
     ngsi_ld_data = {
@@ -14,13 +16,13 @@ class TranslateWoTtoNGSILD():
         #     "observedAt": "2023-12-24T12:00:00Z"
         #     },
         # # is location necessary ??
-        "location": {
-            "type": "GeoProperty",
-            "value": {
-                "type": "Point",
-                "coordinates": [-123.12345, 45.67890]
-                }
-            }
+        # "location": {
+        #     "type": "GeoProperty",
+        #     "value": {
+        #         "type": "Point",
+        #         "coordinates": [-123.12345, 45.67890]
+        #         }
+        #     }
     }
     
     def __init__(self, data):
@@ -37,15 +39,21 @@ class TranslateWoTtoNGSILD():
         properties = self.data.get("properties")
         if properties is not None:
             for prop in properties:
-                prop_type = properties.get(prop).get("type")
-                prop_unit = properties.get(prop).get("unit")
-                value, unitCode = self.translate_value(prop_type, prop_unit)
                 self.ngsi_ld_data[prop] = {
                     "type": "Property",
-                    "value": value,
-                    "unitCode": unitCode,
+                    "value": None,
+                    "unitCode": unitCode(properties.get(prop).get("unit")),
                     "observedAt": "2023-12-24T12:00:00Z"
                     }
+
+    def add_default_location(self):
+        self.ngsi_ld_data["location"] ={
+            "type": "GeoProperty",
+            "value": {
+                "type": "Point",
+                "coordinates": [-123.12345, 45.67890]
+                }
+            }
     
     def translate_from_wot_to_ngsild(self):
         """ The real translation """
@@ -69,6 +77,7 @@ class TranslateWoTtoNGSILD():
         
         # add properties to the default dictionary
         self.manage_properties()
+        self.add_default_location()
         
         return self.ngsi_ld_data
         

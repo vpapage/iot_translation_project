@@ -1,3 +1,5 @@
+from unit_measurement import find_type, units
+
 class TranslateNGSILDtoWoT():
 
     wot_data = {
@@ -41,11 +43,10 @@ class TranslateNGSILDtoWoT():
         prop_type, prop_unit = ""
         for key in self.data:
             if self.data[key].get("type")=="Property":
-                prop_type, prop_unit = self.translate_value(self.data[key].get("value"), self.data[key].get("unitCode"))
                 avail_properties[key] = {
-                    "type": prop_type,
+                    "type": find_type(self.data[key].get("value")),
                     "description": self.description,
-                    "unit": prop_unit,
+                    "unit": units(self.data[key].get("unitCode")),
                     "readOnly": True,
                     "observable": True,
                     "forms": [{

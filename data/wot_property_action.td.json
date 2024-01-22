@@ -1,0 +1,35 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:dev:wot:com:example:temperaturesensor",
+    "title": "TemperatureSensor",
+    "description": "A sensor that reports temperature and controls a radiator",
+    "securityDefinitions": {
+        "no_sec": {
+          "scheme": "nosec"
+        }
+    },
+    "security": ["no_sec"],
+    "properties": {
+      "temperature": {
+        "type": "number",
+        "description": "The current temperature in degrees Celsius",
+        "unit": "celsius",
+        "readOnly": true,
+        "observable": true,
+        "forms": [{
+          "href": "http://example.com/sensor/temperature",
+          "contentType": "application/json"
+        }]
+      }
+    },
+    "actions": {
+      "turnOnRadiator": {
+        "description": "Turn on the radiator when temperature is below 18°C",
+        "forms": [{
+          "href": "http://example.com/sensor/turnOnRadiator",
+          "contentType": "application/json"
+        }]
+      }
+    }
+  }
+  

@@ -1,4 +1,4 @@
-from unit_measurement import unitCode
+from unit_measurement import unitCode, find_value
 
 class TranslateWoTtoNGSILD():
     
@@ -15,7 +15,11 @@ class TranslateWoTtoNGSILD():
         #     "unitCode": "CEL",
         #     "observedAt": "2023-12-24T12:00:00Z"
         #     },
-        # # is location necessary ??
+        # "turnOnRadiator": {
+        #     "type": "Command",
+        #     "description": "Command to turn on the radiator",
+        #     "value": "inactive"
+        #     },
         # "location": {
         #     "type": "GeoProperty",
         #     "value": {
@@ -28,25 +32,43 @@ class TranslateWoTtoNGSILD():
     def __init__(self, data):
         self.data = data 
     
-    def translate_value(self, prop_type, prop_unit):
-        """ Work In Progress!  
-        This function should detect a range of values and return the appropriate values back.
-        """
-        print(prop_type, prop_unit)
-        return "value", "unitCode"
-    
     def manage_properties(self):
+        """ 
+        A mapping from WoT properties to NGSI-LD properties -->
+        A property in WoT, like "temperature", would map directly 
+        to a property in NGSI-LD with similar characteristics.
+        """
         properties = self.data.get("properties")
         if properties is not None:
             for prop in properties:
                 self.ngsi_ld_data[prop] = {
                     "type": "Property",
-                    "value": None,
+                    "value": find_value(properties.get(prop).get("type")),
                     "unitCode": unitCode(properties.get(prop).get("unit")),
                     "observedAt": "2023-12-24T12:00:00Z"
                     }
 
+    def get_action_value(self): # TODO
+        print("Here proper mapping for NGSI-LD commands")
+        return "active"
+
+    def manage_actions(self):
+        """
+        A mapping from WoT actions to NGSI-LD commands -->
+        An action in WoT, such as "turnOnRadiator", can be mapped to a command in NGSI-LD. 
+        The command in NGSI-LD may need to include additional logic to represent the action's effect.
+        """
+        actions = self.data.get("actions")
+        if actions is not None:
+            for act in actions:
+                self.ngsi_ld_data[act] = {
+                    "type": "Command",
+                    "description": actions.get(act).get("description"),
+                    "value": self.get_action_value(),
+                    }
+
     def add_default_location(self):
+        """ Assumption that the device is here, in the location of NTUA"""
         self.ngsi_ld_data["location"] ={
             "type": "GeoProperty",
             "value": {

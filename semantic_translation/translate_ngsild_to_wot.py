@@ -40,7 +40,6 @@ class TranslateNGSILDtoWoT():
 
     def manage_properties(self):
         avail_properties = {}
-        prop_type, prop_unit = ""
         for key in self.data:
             if self.data[key].get("type")=="Property":
                 avail_properties[key] = {
@@ -49,10 +48,10 @@ class TranslateNGSILDtoWoT():
                     "unit": units(self.data[key].get("unitCode")),
                     "readOnly": True,
                     "observable": True,
-                    "forms": [{
-                        "href": f"http://example.com/sensor/{key}",
-                        "contentType": "application/json"
-                    }],
+                    # "forms": [{
+                    #     "href": f"http://example.com/sensor/{key}",
+                    #     "contentType": "application/json"
+                    # }],
                 }
             print(avail_properties)
         return avail_properties

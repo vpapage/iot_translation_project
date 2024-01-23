@@ -14,59 +14,65 @@ assumption_about_the_available_measurement_units = {
 }
 
 
-# Translation from NGSI-LD to WoT
+def find_unit(unitCode):
+    """ A Mapping from NGSI-LD to WoT unit measurements. """
 
-units = {
-    # Temperature
-    "CEL": "celsius",
-    "FAH": "fahrenheit",
-    "K": "kelvin",
+    units = {
+        # Temperature
+        "CEL": "celsius",
+        "FAH": "fahrenheit",
+        "K": "kelvin",
 
-    # Length/Distance
-    "m": "meters",
-    "km": "kilometers",
+        # Length/Distance
+        "m": "meters",
+        "km": "kilometers",
 
-    # Mass/Weight
-    "kg": "kilograms",
-    "g": "grams",
-    "lb": "pounds",
+        # Mass/Weight
+        "kg": "kilograms",
+        "g": "grams",
+        "lb": "pounds",
 
-    # Volume
-    "l": "liters",
-    "L": "liters",
-    "ml": "milliliters",
-    "mL": "milliliters",
-    "m3": "cubic meters",
+        # Volume
+        "l": "liters",
+        "L": "liters",
+        "ml": "milliliters",
+        "mL": "milliliters",
+        "m3": "cubic meters",
 
-    # Time
-    "s": "seconds",
-    "min": "minutes",
-    "h": "hours",
-    "d": "days",
+        # Time
+        "s": "seconds",
+        "min": "minutes",
+        "h": "hours",
+        "d": "days",
 
-    # Pressure
-    "Pa": "pascals",
-    "bar": "bar",
-    "atm": "atmospheres",
+        # Pressure
+        "Pa": "pascals",
+        "bar": "bar",
+        "atm": "atmospheres",
 
-    # Speed 
-    "m/s": "meters per second",
-    "km/h": "kilometers per hour",
-    "mph": "miles per hour",
+        # Speed 
+        "m/s": "meters per second",
+        "km/h": "kilometers per hour",
+        "mph": "miles per hour",
 
-    # Energy
-    "J": "joules",
-    "cal": "calories",
+        # Energy
+        "J": "joules",
+        "cal": "calories",
 
-    # Power
-    "W": "Watts",
-    "kW": "kilowatts",
+        # Power
+        "W": "Watts",
+        "kW": "kilowatts",
 
-}
+    }
 
-def find_type(value):
-    data_class = type(value)
-    if  value is None:
+    return units.get(unitCode)
+
+
+def find_type(property_value):
+    """ A Mapping from NGSI-LD value to Wot type. """
+
+    data_class = type(property_value)
+    if  property_value is None:
         return "null"
     elif data_class=="<class 'int'>" or data_class=="<class 'float'>":
         return "number"
@@ -81,60 +87,77 @@ def find_type(value):
     else:
         return "unknown"
 
-def find_unit(unitCode):
-    return units.get(unitCode)
-
-
 
 # Translation from WoT to NGSI-LD 
 
-unitCode = {
-    # Temperature
-    "celsius": "CEL",
-    "fahrenheit": "FAH",
-    "kelvin": "K",
-
-    # Length/Distance
-    "meters": "m",
-    "kilometers": "km",
-
-    # Mass/Weight
-    "kilograms": "kg",
-    "grams": "g",
-    "pounds": "lb",
-
-    # Volume
-    "liters": "l",
-    "liters": "L",
-    "milliliters": "ml",
-    "milliliters": "mL",
-    "cubic meters": "m3",
-
-    # Time
-    "seconds": "s",
-    "minutes": "min",
-    "hours": "h",
-    "days": "d",
-
-    # Pressure
-    "pascals": "Pa",
-    "bar": "bar",
-    "atmospheres": "atm",
-
-    # Speed 
-    "meters per second": "m/s",
-    "kilometers per hour": "km/h",
-    "miles per hour": "mph",
-
-    # Energy
-    "joules": "J",
-    "calories": "cal",
-
-    # Power
-    "Watts": "W",
-    "kilowatts": "kW",
-
-}
-
 def find_unitCode(units):
+    """ A Mapping from WoT to NGSI-LD unit measurements. """
+    
+    unitCode = {
+        # Temperature
+        "celsius": "CEL",
+        "fahrenheit": "FAH",
+        "kelvin": "K",
+
+        # Length/Distance
+        "meters": "m",
+        "kilometers": "km",
+
+        # Mass/Weight
+        "kilograms": "kg",
+        "grams": "g",
+        "pounds": "lb",
+
+        # Volume
+        "liters": "l",
+        "liters": "L",
+        "milliliters": "ml",
+        "milliliters": "mL",
+        "cubic meters": "m3",
+
+        # Time
+        "seconds": "s",
+        "minutes": "min",
+        "hours": "h",
+        "days": "d",
+
+        # Pressure
+        "pascals": "Pa",
+        "bar": "bar",
+        "atmospheres": "atm",
+
+        # Speed 
+        "meters per second": "m/s",
+        "kilometers per hour": "km/h",
+        "miles per hour": "mph",
+
+        # Energy
+        "joules": "J",
+        "calories": "cal",
+
+        # Power
+        "Watts": "W",
+        "kilowatts": "kW",
+
+    }
+
     return unitCode.get(units)
+
+
+def find_value(property_type):
+    """ A Mapping from NGSI-LD value to Wot type. """
+
+    if  property_type is None:
+        return None
+    elif property_type=="number":
+        return 0
+    elif property_type=="string":
+        return ""
+    elif property_type=="boolean":
+        return False
+    elif property_type=="array":
+        return []
+    elif property_type=="object":
+        return {}
+    else:
+        return "unknown"

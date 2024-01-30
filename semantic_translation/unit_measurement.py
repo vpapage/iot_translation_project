@@ -74,15 +74,15 @@ def find_type(property_value):
     data_class = type(property_value)
     if  property_value is None:
         return "null"
-    elif data_class=="<class 'int'>" or data_class=="<class 'float'>":
+    elif data_class==type(10) or data_class==type(10.10):
         return "number"
-    elif data_class=="<class 'str'>": 
+    elif data_class==type("str"): 
         return "string"
-    elif data_class=="<class 'bool'>":
+    elif data_class==type(True):
         return "boolean"
-    elif data_class=="<class 'list'>":
+    elif data_class==type([]):
         return "array"
-    elif data_class=="<class 'dict'>":
+    elif data_class==type({}):
         return "object"
     else:
         return "unknown"

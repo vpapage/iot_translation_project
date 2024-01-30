@@ -25,6 +25,15 @@
     "actions": {
       "turnOnRadiator": {
         "description": "Turn on the radiator when temperature is below 18°C",
+        "input": {
+          "type": "object",
+          "properties": {
+            "temperature": {
+              "type": "number",
+              "unit": "celsius"
+              }
+            }
+          },
         "forms": [{
           "href": "http://example.com/sensor/turnOnRadiator",
           "contentType": "application/json"

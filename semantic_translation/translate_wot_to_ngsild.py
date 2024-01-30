@@ -1,5 +1,4 @@
-from unit_measurement import unitCode, find_value
-import datetime
+from semantic_translation.unit_measurement import find_unitCode, find_value
 
 class TranslateWoTtoNGSILD():
     
@@ -49,8 +48,8 @@ class TranslateWoTtoNGSILD():
                 self.ngsi_ld_data[prop] = {
                     "type": "Property",
                     "value": find_value(properties.get(prop).get("type")),
-                    "unitCode": unitCode(properties.get(prop).get("unit")),
-                    "observedAt": datetime.now()
+                    "unitCode": find_unitCode(properties.get(prop).get("unit")),
+                    "observedAt": "2023-12-24T12:00:00Z"
                     }
 
     def get_action_value(self): # TODO

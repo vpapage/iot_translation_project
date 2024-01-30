@@ -1,4 +1,4 @@
-from unit_measurement import find_type, units
+from semantic_translation.unit_measurement import find_type, find_unit
 
 class TranslateNGSILDtoWoT():
 
@@ -34,12 +34,11 @@ class TranslateNGSILDtoWoT():
 
     def manage_properties(self):
         avail_properties = {}
-        for key in self.data:
-            if self.data[key].get("type")=="Property" and self.data[key].get("value").get("action") is None:
+        for key, value in self.data.items():
+            if isinstance(value, dict) and value.get("type")=="Property" and not isinstance(value.get("value"), dict):
                 avail_properties[key] = {
                     "type": find_type(self.data[key].get("value")),
-                    "description": self.description,
-                    "unit": units(self.data[key].get("unitCode")),
+                    "unit": find_unit(self.data[key].get("unitCode")),
                     "readOnly": True,
                     "observable": True,
                     # "forms": [{
@@ -47,13 +46,14 @@ class TranslateNGSILDtoWoT():
                     #     "contentType": "application/json"
                     # }],
                 }
-            print(avail_properties)
+        print(avail_properties)
         return avail_properties
 
     def manage_actions(self):
         avail_actions = {}
-        for key in self.data:
-            if self.data[key].get("type")=="Property" and self.data[key].get("value").get("action") is not None:
+        for key, value in self.data.items():
+            print(key, value)
+            if isinstance(value, dict) and value.get("type")=="Property" and isinstance(value.get("value"), dict) and value.get("action") is not None:
                 avail_actions[key] = {
                     "description": "", # TODO
                     # "forms": [{
@@ -61,7 +61,7 @@ class TranslateNGSILDtoWoT():
                     #     "contentType": "application/json"
                     # }],
                 }
-            print(avail_actions)
+        print(avail_actions)
         return avail_actions
 
     def translate_from_ngsild_to_wot(self):
@@ -72,13 +72,17 @@ class TranslateNGSILDtoWoT():
         parts = ngsild_id.split(":")
         title = parts[-2]
         id_num = parts[-1]
-        
+        if isinstance(self.data.get("name"), dict) and self.data.get("name").get("value") is not None:
+            description = self.data.get("name").get("value")
+        else: 
+            description = "No description given"
+
         # update default dictionary
         self.wot_data.update(
             {
                 "id": f"urn:wot:{title}:{id_num}",
                 "title": self.data.get("type"), # or title
-                "description": self.data["name"].get("value"),
+                "description": description,
                 "properties": self.manage_properties(),
                 "actions": self.manage_actions()
             }

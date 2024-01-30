@@ -1,4 +1,5 @@
 from unit_measurement import unitCode, find_value
+import datetime
 
 class TranslateWoTtoNGSILD():
     
@@ -29,6 +30,10 @@ class TranslateWoTtoNGSILD():
         #     }
     }
     
+    ngsi_ld_context = {
+            # Here will be collected all the extra context info for this Entity
+        }
+    
     def __init__(self, data):
         self.data = data 
     
@@ -45,12 +50,15 @@ class TranslateWoTtoNGSILD():
                     "type": "Property",
                     "value": find_value(properties.get(prop).get("type")),
                     "unitCode": unitCode(properties.get(prop).get("unit")),
-                    "observedAt": "2023-12-24T12:00:00Z"
+                    "observedAt": datetime.now()
                     }
 
     def get_action_value(self): # TODO
-        print("Here proper mapping for NGSI-LD commands")
-        return "active"
+        """ Available status values: 
+        Pending, Delivered, In Progress, Completed, Failed, Expired.
+        """
+        # TODO better investigation
+        return "pending"  # set as initial value and in real time the device will change it properly
 
     def manage_actions(self):
         """
@@ -62,20 +70,37 @@ class TranslateWoTtoNGSILD():
         if actions is not None:
             for act in actions:
                 self.ngsi_ld_data[act] = {
-                    "type": "Command",
-                    "description": actions.get(act).get("description"),
-                    "value": self.get_action_value(),
-                    }
+                    # "description": actions.get(act).get("description"),
+                    "type": "Property",
+                    "value": {
+                        "action": "execute",
+                        "status": self.get_action_value(),
+                    },
+                }
 
     def add_default_location(self):
         """ Assumption that the device is here, in the location of NTUA"""
-        self.ngsi_ld_data["location"] ={
+        self.ngsi_ld_data["location"] = {
             "type": "GeoProperty",
             "value": {
                 "type": "Point",
                 "coordinates": [-123.12345, 45.67890]
                 }
             }
+    
+    def set_context(self):
+        """ Add the @context field at the ngsi-ld configuration 
+        Call this function at the end so this field will be at the end of the configuration (the last one).
+        """
+        if self.ngsi_ld_context=={}:
+            self.ngsi_ld_data["@context"] = "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld"
+        else:
+            self.ngsi_ld_data["@context"] = [
+                "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld",
+                {
+                    self.ngsi_ld_context
+                }                
+            ]
     
     def translate_from_wot_to_ngsild(self):
         """ The real translation """
@@ -97,9 +122,11 @@ class TranslateWoTtoNGSILD():
             }
         )
         
-        # add properties to the default dictionary
+        # add everything to the config dictionary
         self.manage_properties()
+        self.manage_actions()
         self.add_default_location()
+        self.set_context()
         
         return self.ngsi_ld_data
         

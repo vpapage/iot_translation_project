@@ -14,34 +14,28 @@ class TranslateNGSILDtoWoT():
         },
         "security": ["no_sec"],
         "properties": {
-            "temperature": {
-                "type": "number",
-                "description": "The current temperature in degrees Celsius",
-                "unit": "celsius",
-                "readOnly": True,
-                "observable": True,
-                "forms": [{
-                    "href": "http://example.com/sensor/temperature",
-                    "contentType": "application/json"
-                }]
-            },
-        }
+            # "temperature": {
+            #     "type": "number",
+            #     "description": "The current temperature in degrees Celsius",
+            #     "unit": "celsius",
+            #     "readOnly": True,
+            #     "observable": True,
+            #     "forms": [{
+            #         "href": "http://example.com/sensor/temperature",
+            #         "contentType": "application/json"
+            #     }]
+            # },
+        },
+        "actions": {}
     }
     
     def __init__(self, data):
         self.data = data 
-        
-    def translate_value(self, value, unitCode):
-        """ Work In Progress!  
-        This function should detect a range of values and return the appropriate values back.
-        """
-        print(value, unitCode)
-        return "prop_type", "prop_unit"
 
     def manage_properties(self):
         avail_properties = {}
         for key in self.data:
-            if self.data[key].get("type")=="Property":
+            if self.data[key].get("type")=="Property" and self.data[key].get("value").get("action") is None:
                 avail_properties[key] = {
                     "type": find_type(self.data[key].get("value")),
                     "description": self.description,
@@ -55,6 +49,20 @@ class TranslateNGSILDtoWoT():
                 }
             print(avail_properties)
         return avail_properties
+
+    def manage_actions(self):
+        avail_actions = {}
+        for key in self.data:
+            if self.data[key].get("type")=="Property" and self.data[key].get("value").get("action") is not None:
+                avail_actions[key] = {
+                    "description": "", # TODO
+                    # "forms": [{
+                    #     "href": f"http://example.com/sensor/{key}",
+                    #     "contentType": "application/json"
+                    # }],
+                }
+            print(avail_actions)
+        return avail_actions
 
     def translate_from_ngsild_to_wot(self):
         """ The real translation """
@@ -71,7 +79,8 @@ class TranslateNGSILDtoWoT():
                 "id": f"urn:wot:{title}:{id_num}",
                 "title": self.data.get("type"), # or title
                 "description": self.data["name"].get("value"),
-                "properties": self.manage_properties()
+                "properties": self.manage_properties(),
+                "actions": self.manage_actions()
             }
         )
         return self.wot_data

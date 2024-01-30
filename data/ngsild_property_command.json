@@ -7,9 +7,12 @@
       "unitCode": "CEL"
     },
     "turnOnRadiator": {
-      "type": "Command",
       "description": "Command to turn on the radiator",
-      "value": "inactive"
+      "type": "Property",
+      "value": {
+        "action": "execute",
+        "status": "pending"
+      }
     },
     "@context": [
       "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",

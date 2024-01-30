@@ -2,40 +2,31 @@ from manage_json import ManageJSON
 from semantic_translation.translate_ngsild_to_wot import TranslateNGSILDtoWoT
 from semantic_translation.translate_wot_to_ngsild import TranslateWoTtoNGSILD
 
-car = {
-    "properties": {
-        "name1": {
-            "brand": "Ford1",
-            "model": "Mustang1",
-            "year": 19641
-            }, 
-        "name2": {
-            "brand": "Ford2",
-            "model": "Mustang2",
-            "year": 19642
-            }, 
-    }
-}
 
 def main():
-    print("Hello from the main function!")
+    print("Main function displaying basic usage of the the project's capabilities")
 
 if __name__ == "__main__":
     manage_file = ManageJSON()
     
-    # from WoT to NGSILD
-    row_data = manage_file.read_json_file("data/temperatureSensor.td.json")
-    print(row_data)
-    translate_model = TranslateWoTtoNGSILD(row_data)
-    simp_data = translate_model.translate_from_wot_to_ngsild()
-    manage_file.write_json_file(simp_data, "data/results/ngsild_temperatureSensor.json")
+    print("from WoT to NGSILD")
+    row_data_wot = manage_file.read_json_file("data/wot_property_action.td.json")
+    print("row data:")
+    print(row_data_wot)
+    translate_model_1 = TranslateWoTtoNGSILD(row_data_wot)
+    data_result_ngsild = translate_model_1.translate_from_wot_to_ngsild()
+    print("result")
+    print(data_result_ngsild)
+    manage_file.write_json_file(data_result_ngsild, "data/results/ngsild_result_property_action.json")
     
-    # # from NGSILD to WoT
-    # row_data = translate_model.read_json_file("data/chatNGSILD.json")
-    # print(row_data)
-    # translate_model = TranslateNGSILDtoWoT(row_data)
-    # simp_data = translate_model.translate_from_ngsild_to_wot()
-    # manage_file.write_json_file(simp_data, "data/results/wot_temperatureSensor.td.json")
+    print("from NGSILD to WoT")
+    row_data_ngsild = manage_file.read_json_file("data/ngsild_property_action.json")
+    print("row_data")
+    print(row_data_ngsild)
+    translate_model_2 = TranslateNGSILDtoWoT(row_data_ngsild)
+    data_result_wot = translate_model_2.translate_from_ngsild_to_wot()
+    print("result")
+    print(data_result_wot)
+    manage_file.write_json_file(data_result_wot, "data/results/wot_result_property_action.td.json")
 
-    print(simp_data)
     main()

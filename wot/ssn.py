@@ -7,6 +7,9 @@ class PhysicalObject:
         print("PhysicalObject")
 
 
+# ---------------------------------------------- #
+
+
 class System(PhysicalObject):
     
     def show_element(self):
@@ -28,9 +31,11 @@ class Sensor(PhysicalObject):
         print("Sensor")
 
 
-class SensingDevice(Device, Sensor):
+class SensingDevice:
      
     def __init__(self):
+        device = Device()
+        sensor
         self.rdf = "smtg"
     
     def show_element(self):

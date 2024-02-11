@@ -57,24 +57,22 @@ A complementary tutorial is available at http://www.thingweb.io/smart-coffee-mac
         'makeDrink': {
             'description': '''Make a drink from available list of beverages. Accepts drink id as input.''',
             'input': {
-                'type': 'object',
-                'properties': {
-                    'drinkId': {
-                        'type': 'string',
-                        'description': '''Defines what drink to make, drinkId is one of possibleDrinks property values, e.g. latte.''',
-                    },
-                },
+                'type': 'string',
+                'description': '''Defines what drink to make, one of possibleDrinks property values, e.g. latte.''',
+            },
+            'output': {
+                'type': 'string',
+                'description': '''Returns a message when all invoked promises are resolved (asynchronous).''',
             },
         },
     },
     'events': {
-        # # TODO enforce this if can be
-        # 'maintenanceAlert': {    
-        #     'description': '''Maintenance needed event. Emitted when the available resource level is not sufficient for a desired drink.''',
-        #     'data': {
-        #         'type': 'string',
-        #     },
-        # },
+        'maintenanceAlert': {    
+            'description': '''Maintenance alert. Emitted when the maintenanceNeeded property is true.''',
+            'data': {
+                'type': 'string',
+            },
+        },
     },
 }
 
@@ -116,11 +114,10 @@ async def main():
     
     # Set up a handler for makeDrink action
     async def make_drink_action_handler(params):
-        params = params['input'] if params['input'] else {}
         
         # Check if params are provided, else give default value
         drinkId = 'espresso'
-        drinkId = params.get('drinkId', drinkId)
+        drinkId = params.get('input', drinkId)
         
         # Deliver the drink
         return f'Your {drinkId} is in progress!'

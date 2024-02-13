@@ -1,4 +1,5 @@
-from semantic_translation.unit_measurement import find_type, find_unit
+from semantic_translation.unit_measurement import find_unit
+from semantic_translation.type_definitions import find_type
 
 class TranslateNGSILDtoWoT():
 

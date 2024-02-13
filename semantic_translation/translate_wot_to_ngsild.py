@@ -1,4 +1,5 @@
-from semantic_translation.unit_measurement import find_unitCode, find_value
+from semantic_translation.unit_measurement import find_unitCode
+from semantic_translation.type_definitions import find_value
 
 class TranslateWoTtoNGSILD():
     
@@ -45,12 +46,14 @@ class TranslateWoTtoNGSILD():
         properties = self.data.get("properties")
         if properties is not None:
             for prop in properties:
-                self.ngsi_ld_data[prop] = {
-                    "type": "Property",
-                    "value": find_value(properties.get(prop).get("type")),
-                    "unitCode": find_unitCode(properties.get(prop).get("unit")),
-                    "observedAt": "2023-12-24T12:00:00Z"
-                    }
+                self.ngsi_ld_data[prop] = find_value(properties.get(prop).get("type"))
+                
+                # self.ngsi_ld_data[prop] = {
+                #     "type": "Property",
+                #     "value": find_value(properties.get(prop).get("type")),
+                #     "unitCode": find_unitCode(properties.get(prop).get("unit")),
+                #     "observedAt": "2023-12-24T12:00:00Z"
+                #     }
 
     def get_action_value(self): # TODO
         """ Available status values: 

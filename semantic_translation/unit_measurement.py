@@ -68,28 +68,6 @@ def find_unit(unitCode):
     return units.get(unitCode)
 
 
-def find_type(property_value):
-    """ A Mapping from NGSI-LD value to Wot type. """
-
-    data_class = type(property_value)
-    if  property_value is None:
-        return "null"
-    elif data_class==type(10) or data_class==type(10.10):
-        return "number"
-    elif data_class==type("str"): 
-        return "string"
-    elif data_class==type(True):
-        return "boolean"
-    elif data_class==type([]):
-        return "array"
-    elif data_class==type({}):
-        return "object"
-    else:
-        return "unknown"
-
-
-# Translation from WoT to NGSI-LD 
-
 def find_unitCode(units):
     """ A Mapping from WoT to NGSI-LD unit measurements. """
     
@@ -142,22 +120,3 @@ def find_unitCode(units):
     }
 
     return unitCode.get(units)
-
-
-def find_value(property_type):
-    """ A Mapping from NGSI-LD value to Wot type. """
-
-    if  property_type is None:
-        return None
-    elif property_type=="number":
-        return 0
-    elif property_type=="string":
-        return ""
-    elif property_type=="boolean":
-        return False
-    elif property_type=="array":
-        return []
-    elif property_type=="object":
-        return {}
-    else:
-        return "unknown"

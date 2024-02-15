@@ -1,3 +1,5 @@
+from semantic_translation.unit_measurement import find_unitCode
+
 assumption_about_conversions_of_data_structures = {
 
 }
@@ -23,20 +25,33 @@ def find_type(property_value):
         return "unknown"
 
 
-def find_value(property_type):
+def find_value(prop):
     """ A Mapping from Wot type to NGSI-LD value. """
-
-    if  property_type is None:
-        return None
-    elif property_type=="number":
-        return 0
+    property_type = prop.get("type")
+    conversion = None
+    if property_type=="number":
+        conversion = {
+            "type": "Property",
+            "value": 0,
+            "unitCode": find_unitCode(prop.get("unit"))
+        }
     elif property_type=="string":
-        return ""
+        conversion = {
+            "type": "Property",
+            "value": ""
+        }
     elif property_type=="boolean":
-        return False
+        conversion = {
+            "type": "Property",
+            "value": False,
+            "observedAt": "2023-12-24T12:00:00Z"
+        }
     elif property_type=="array":
-        return []
+        # in python you can save in this list anything
+        conversion = []
     elif property_type=="object":
-        return {}
+        # not supported yet
+        conversion = {}
     else:
-        return "unknown"
+        conversion = "unknown"
+    return conversion

@@ -1,5 +1,5 @@
 __pycache__
-data/results/
+# data/results/
 recycle_bin/*
 .vscode
 .venv

@@ -46,21 +46,7 @@ class TranslateWoTtoNGSILD():
         properties = self.data.get("properties")
         if properties is not None:
             for prop in properties:
-                self.ngsi_ld_data[prop] = find_value(properties.get(prop).get("type"))
-                
-                # self.ngsi_ld_data[prop] = {
-                #     "type": "Property",
-                #     "value": find_value(properties.get(prop).get("type")),
-                #     "unitCode": find_unitCode(properties.get(prop).get("unit")),
-                #     "observedAt": "2023-12-24T12:00:00Z"
-                #     }
-
-    def get_action_value(self): # TODO
-        """ Available status values: 
-        Pending, Delivered, In Progress, Completed, Failed, Expired.
-        """
-        # TODO better investigation
-        return "pending"  # set as initial value and in real time the device will change it properly
+                self.ngsi_ld_data[prop] = find_value(properties.get(prop))
 
     def manage_actions(self):
         """
@@ -72,12 +58,13 @@ class TranslateWoTtoNGSILD():
         if actions is not None:
             for act in actions:
                 self.ngsi_ld_data[act] = {
-                    # "description": actions.get(act).get("description"),
                     "type": "Property",
                     "value": {
                         "action": "execute",
-                        "status": self.get_action_value(),
+                        "status": "pending",
+                        act: None     # like this the input could be anything
                     },
+                    "description": actions.get(act).get("description")
                 }
 
     def add_default_location(self):
@@ -86,7 +73,7 @@ class TranslateWoTtoNGSILD():
             "type": "GeoProperty",
             "value": {
                 "type": "Point",
-                "coordinates": [-123.12345, 45.67890]
+                "coordinates": [37.979037, 23.782899]
                 }
             }
     

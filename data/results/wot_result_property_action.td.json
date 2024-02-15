@@ -1,0 +1,23 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:wot:TemperatureSensor:001",
+    "title": "TemperatureSensor",
+    "description": "No description given",
+    "securityDefinitions": {
+        "no_sec": {
+            "scheme": "nosec"
+        }
+    },
+    "security": [
+        "no_sec"
+    ],
+    "properties": {
+        "temperature": {
+            "type": "number",
+            "unit": "celsius",
+            "readOnly": true,
+            "observable": true
+        }
+    },
+    "actions": {}
+}

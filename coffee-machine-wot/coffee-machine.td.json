@@ -1,0 +1,50 @@
+{
+    "title": "Smart-Coffee-Machine",
+    "id": "urn:dev:wot:coffee-machine:101",
+    "description": "A smart coffee machine with a range of capabilities. A complementary tutorial is available at http://www.thingweb.io/smart-coffee-machine.html.",
+    "support": "git://github.com/eclipse/thingweb.node-wot.git",
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1"
+    ],
+    "securityDefinitions": {
+        "nosec_sc":{
+            "scheme":"nosec" 
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "possibleDrinks": {
+            "type": "array",
+            "description": "The list of possible drinks in general. Doesn t depend on the available resources.",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintenanceNeeded": {
+            "type": "boolean",
+            "description": "Shows whether a maintenance is needed. The property is observable. Automatically set to True when the servedCounter property exceeds 1000.",
+            "observable": true
+            }
+        },
+    "actions": {
+        "makeDrink": {
+            "description": "Make a drink from available list of beverages. Accepts drink id as input.",
+            "input": {
+                "type": "string",
+                "description": "Defines what drink to make, one of possibleDrinks property values, e.g. latte."
+            },
+            "output": {
+                "type": "string",
+                "description": "Returns a message when all invoked promises are resolved (asynchronous)."
+            }
+        }
+    },
+    "events": {
+        "maintenanceAlert": {    
+            "description": "Maintenance alert. Emitted when the maintenanceNeeded property is true.",
+            "data": {
+                "type": "string"
+            }
+        }
+    }
+}

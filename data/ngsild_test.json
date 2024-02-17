@@ -1,5 +1,5 @@
 {
-    "id": "urn:ngsi-ld: Building:store001",
+    "id": "urn:ngsi-ld:Building:store001",
     "type": "Building",
     "category": {
         "type": "Property",

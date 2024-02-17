@@ -1,5 +1,9 @@
+import logging
 from semantic_translation.unit_measurement import find_unitCode
 from semantic_translation.type_definitions import find_value
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 class TranslateWoTtoNGSILD():
     
@@ -36,6 +40,7 @@ class TranslateWoTtoNGSILD():
     
     def __init__(self, data):
         self.data = data 
+        logging.info("Initializing translation from WoT to NGSI-LD.")
     
     def manage_properties(self):
         """ 
@@ -91,7 +96,7 @@ class TranslateWoTtoNGSILD():
                 }                
             ]
     
-    def translate_from_wot_to_ngsild(self):
+    def translate(self):
         """ The real translation """
         
         # id manipulation and generic info

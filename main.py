@@ -3,7 +3,8 @@ from iot_model_translator import IoTModelTranslator
 
 def main():
 
-    wot_to_ngsild = IoTModelTranslator("WoT", "coffee-machine-wot/coffee-machine.td.json")
+    wot_to_ngsild = IoTModelTranslator("WoT", "data/coffee-machine.td.json")
+    wot_to_ngsild.translate_wot_to_ngsild_data_model_and_save_to("data/results/ngsild-data-model.yaml")
     wot_to_ngsild.translate_and_save_to("data/results/ngsild-coffee-machine.json")
 
     ngsild_to_wot = IoTModelTranslator("NGSI-LD", "data/ngsild_test.json")

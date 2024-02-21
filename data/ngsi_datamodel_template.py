@@ -1,5 +1,5 @@
  
-components_tamplate = {
+yaml_tamplate = {
   "components": {
     "schemas": {
       "Data_model_name": {
@@ -24,10 +24,9 @@ components_tamplate = {
     "title": "Data model title",
     "version": "1.0.0"
   },
-  "openapi": '3.0.0'
-}
-
-paths_tamplate = {
+  "openapi": '3.0.0',
+  
+# These paths are merely representative.
   "paths": {
     "/ngsi-ld/v1/entities": {
       "get": {
@@ -47,6 +46,3 @@ paths_tamplate = {
     }
   }
 }
-
-
-yaml_tamplate = [ components_tamplate, paths_tamplate]

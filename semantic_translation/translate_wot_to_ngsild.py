@@ -1,6 +1,7 @@
 import logging
 from semantic_translation.unit_measurement import find_unitCode
 from semantic_translation.type_definitions import find_value
+from data.ngsi_datamodel_template import yaml_tamplate
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -123,4 +124,47 @@ class TranslateWoTtoNGSILD():
         self.set_context()
         
         return self.ngsi_ld_data
+
+
+
+    def data_model_properties(self):
+        """ A mapping from WoT properties to NGSI-LD data-model properties. """
+        data_model_properties = {}
+        properties = self.data.get("properties")
+        if properties is None:
+            logging.info("None properies found.")  
+        else:
+            for prop in properties:
+                entity_property = properties.get(prop)
+                data_model_properties[prop] = {}
+                description = entity_property.get("description")
+                data_model_properties[prop]["description"] = f"'{description}'"
+                # optional fields
+                fields = ["maximum", "minimum"]
+                for field in fields:
+                    if entity_property.get(field): 
+                        data_model_properties[prop][field] = entity_property.get(field)
+                # required fields 
+                property_type = entity_property.get("type")
+                if property_type=="number":
+                    data_model_properties[prop]["x-ngsi"] = {"units": entity_property.get("unit")}
+                data_model_properties[prop]["type"] = property_type
+        return data_model_properties
+
+    def data_model_generator(self):
+        """ Convert the WoT thing description (TD) into a NGSI-LD Informtion Model. """
         
+        # generic info
+        title = self.data.get("title")
+        description = self.data.get("description")
+        
+        schemas = {
+            title : {
+                "description": f"'The data model describes: {description}'",
+                "properties": self.data_model_properties()
+            }
+        }
+        data_model_yaml = yaml_tamplate
+        data_model_yaml["components"]["schemas"] = schemas
+
+        return data_model_yaml

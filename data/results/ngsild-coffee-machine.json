@@ -1,0 +1,34 @@
+{
+    "id": "urn:ngsi-ld:coffee-machine:101",
+    "type": "Smart-Coffee-Machine",
+    "name": {
+        "type": "Text",
+        "value": "A smart coffee machine with a range of capabilities. A complementary tutorial is available at http://www.thingweb.io/smart-coffee-machine.html."
+    },
+    "possibleDrinks": [],
+    "maintenanceNeeded": {
+        "type": "Property",
+        "value": false,
+        "observedAt": "2023-12-24T12:00:00Z"
+    },
+    "makeDrink": {
+        "type": "Property",
+        "value": {
+            "action": "execute",
+            "status": "pending",
+            "makeDrink": null
+        },
+        "description": "Make a drink from available list of beverages. Accepts drink id as input."
+    },
+    "location": {
+        "type": "GeoProperty",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                37.979037,
+                23.782899
+            ]
+        }
+    },
+    "@context": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld"
+}

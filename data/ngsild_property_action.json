@@ -8,11 +8,7 @@
     },
     "turnOnRadiator": {
       "description": "Command to turn on the radiator",
-      "type": "Property",
-      "value": {
-        "action": "execute",
-        "status": "pending"
-      }
+      "type": "Property"
     },
     "@context": [
       "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",

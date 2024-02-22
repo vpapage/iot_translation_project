@@ -1,7 +1,7 @@
 import logging
 from semantic_translation.unit_measurement import find_unitCode
 from semantic_translation.type_definitions import find_value
-from data.ngsi_datamodel_template import yaml_tamplate
+from data.ngsild_datamodel_template import yaml_template
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -56,8 +56,9 @@ class TranslateWoTtoNGSILD():
 
     def manage_actions(self):
         """
-        A mapping from WoT actions to NGSI-LD commands -->
-        An action in WoT, such as "turnOnRadiator", can be mapped to a command in NGSI-LD. 
+        A mapping from WoT actions to NGSI-LD -->
+        An action in WoT, such as "turnOnRadiator", cannot be mapped directly in NGSI-LD.
+        We create property attributes in order to retain the information.
         The command in NGSI-LD may need to include additional logic to represent the action's effect.
         """
         actions = self.data.get("actions")
@@ -65,13 +66,9 @@ class TranslateWoTtoNGSILD():
             for act in actions:
                 self.ngsi_ld_data[act] = {
                     "type": "Property",
-                    "value": {
-                        "action": "execute",
-                        "status": "pending",
-                        act: None     # like this the input could be anything
-                    },
-                    "description": actions.get(act).get("description")
+                    "value": ""
                 }
+            # input/output not supported yet
 
     def add_default_location(self):
         """ Assumption that the device is here, in the location of NTUA"""
@@ -125,21 +122,21 @@ class TranslateWoTtoNGSILD():
         
         return self.ngsi_ld_data
 
-
-
     def data_model_properties(self):
         """ A mapping from WoT properties to NGSI-LD data-model properties. """
         data_model_properties = {}
+        
+        # WoT properties collected
         properties = self.data.get("properties")
         if properties is None:
-            logging.info("None properies found.")  
+            logging.info("Properties not found.")  
         else:
             for prop in properties:
                 entity_property = properties.get(prop)
                 data_model_properties[prop] = {}
-                description = entity_property.get("description")
-                data_model_properties[prop]["description"] = f"'{description}'"
                 # optional fields
+                description = entity_property.get("description")
+                if description: data_model_properties[prop]["description"] = f"'{description}'"     # weird quotes it is a string message
                 fields = ["maximum", "minimum"]
                 for field in fields:
                     if entity_property.get(field): 
@@ -149,22 +146,37 @@ class TranslateWoTtoNGSILD():
                 if property_type=="number":
                     data_model_properties[prop]["x-ngsi"] = {"units": entity_property.get("unit")}
                 data_model_properties[prop]["type"] = property_type
+
+        # WoT actions collected  TODO wip
+        actions = self.data.get("actions")
+        if actions is None:
+            logging.info("Actions not found.")  
+        else:
+            for act in actions:
+                data_model_properties[act] = {
+                    "format": "command",
+                    "type": "string"
+                }
+        
         return data_model_properties
 
     def data_model_generator(self):
-        """ Convert the WoT thing description (TD) into a NGSI-LD Informtion Model. """
+        """ Convert the WoT thing description (TD) into a NGSI-LD Data Model. """
         
         # generic info
         title = self.data.get("title")
         description = self.data.get("description")
         
         schemas = {
-            title : {
-                "description": f"'The data model describes: {description}'",
+            title: {
+                "description": f"'{description}'",
                 "properties": self.data_model_properties()
             }
         }
-        data_model_yaml = yaml_tamplate
-        data_model_yaml["components"]["schemas"] = schemas
 
+        data_model_yaml = yaml_template
+        data_model_yaml["components"]["schemas"] = schemas
+        data_model_yaml["info"]["description"] = f"'The data model describes: {description}'"
+        data_model_yaml["info"]["title"] = f"'{title}Models'"
+        
         return data_model_yaml

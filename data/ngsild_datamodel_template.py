@@ -1,5 +1,4 @@
- 
-yaml_tamplate = {
+yaml_template = {
   "components": {
     "schemas": {
       "Data_model_name": {

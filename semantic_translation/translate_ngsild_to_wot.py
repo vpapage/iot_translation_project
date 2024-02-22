@@ -1,6 +1,7 @@
 import logging
 from semantic_translation.unit_measurement import find_unit
 from semantic_translation.type_definitions import find_type
+from wot.security_definition import every_security_option  # more security options
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

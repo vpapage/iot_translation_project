@@ -1,0 +1,33 @@
+components:
+  schemas:
+    TemperatureSensor:
+      description: '''A sensor that reports temperature and controls a radiator'''
+      properties:
+        temperature:
+          description: '''The current temperature in degrees Celsius'''
+          x-ngsi:
+            units: celsius
+          type: number
+        turnOnRadiator:
+          format: command
+          type: string
+info:
+  description: '''The data model describes: A sensor that reports temperature and
+    controls a radiator'''
+  title: '''TemperatureSensorModels'''
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /ngsi-ld/v1/entities:
+    get:
+      responses:
+        '200':
+          description: '''OK'''
+          content:
+            application/ld+json:
+              schema:
+                type: object
+        '400':
+          description: '''Invalid input'''
+        '422':
+          description: '''Validation exception'''

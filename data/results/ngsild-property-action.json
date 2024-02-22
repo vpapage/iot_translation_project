@@ -1,0 +1,28 @@
+{
+    "id": "urn:ngsi-ld:example:temperaturesensor",
+    "type": "TemperatureSensor",
+    "name": {
+        "type": "Text",
+        "value": "A sensor that reports temperature and controls a radiator"
+    },
+    "temperature": {
+        "type": "Property",
+        "value": 0,
+        "unitCode": "CEL"
+    },
+    "turnOnRadiator": {
+        "type": "Property",
+        "value": ""
+    },
+    "location": {
+        "type": "GeoProperty",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                37.979037,
+                23.782899
+            ]
+        }
+    },
+    "@context": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld"
+}

@@ -1,8 +1,8 @@
 components:
   schemas:
     Smart-Coffee-Machine:
-      description: '''The data model describes: A smart coffee machine with a range
-        of capabilities. A complementary tutorial is available at http://www.thingweb.io/smart-coffee-machine.html.'''
+      description: '''A smart coffee machine with a range of capabilities. A complementary
+        tutorial is available at http://www.thingweb.io/smart-coffee-machine.html.'''
       properties:
         possibleDrinks:
           description: '''The list of possible drinks in general. Doesn t depend on
@@ -13,8 +13,9 @@ components:
             Automatically set to True when the servedCounter property exceeds 1000.'''
           type: boolean
 info:
-  description: '''Base Model Definitions from Smart Data Models'''
-  title: Data model title
+  description: '''The data model describes: A smart coffee machine with a range of
+    capabilities. A complementary tutorial is available at http://www.thingweb.io/smart-coffee-machine.html.'''
+  title: '''Smart-Coffee-MachineModels'''
   version: 1.0.0
 openapi: 3.0.0
 paths:

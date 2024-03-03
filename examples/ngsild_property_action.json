@@ -1,0 +1,26 @@
+{
+    "id": "urn:ngsi-ld:TemperatureSensor:001",
+    "type": "TemperatureSensor",
+    "temperature": {
+      "type": "Property",
+      "value": 20,
+      "unitCode": "CEL"
+    },
+    "turnOnRadiator": {
+      "description": "Command to turn on the radiator",
+      "type": "Property",
+      "value": {
+        "action": "execute",
+        "status": "pending"
+      }
+    },
+    "@context": [
+      "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+      {
+        "TemperatureSensor": "http://example.org/TemperatureSensor",
+        "temperature": "http://example.org/temperature",
+        "turnOnRadiator": "http://example.org/turnOnRadiator"
+      }
+    ]
+  }
+  

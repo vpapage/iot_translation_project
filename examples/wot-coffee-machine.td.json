@@ -1,0 +1,35 @@
+{
+    "title": "Smart-Coffee-Machine",
+    "id": "urn:dev:wot:coffee-machine:101",
+    "description": "A smart coffee machine with a range of capabilities.",
+    "support": "git://github.com/eclipse/thingweb.node-wot.git",
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1"
+    ],
+    "securityDefinitions": {
+        "nosec_sc":{
+            "scheme":"nosec" 
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "possibleDrinks": {
+            "type": "array",
+            "description": "The list of possible drinks in general. Doesn't depend on the available resources.",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintenanceNeeded": {
+            "type": "boolean",
+            "description": "Shows whether a maintenance is needed. The property is observable. Automatically set to True when the servedCounter property exceeds 1000.",
+            "observable": true
+            }
+        },
+    "actions": {
+        "makeDrink": {
+            "description": "Make a drink."
+        }
+    },
+    "events": {}
+}

@@ -1,6 +1,5 @@
 import logging
 from semantic_translation.unit_measurement import find_unitCode
-from semantic_translation.type_definitions import find_value
 from data.ngsild_datamodel_template import yaml_template
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -11,28 +10,7 @@ class TranslateWoTtoNGSILD():
     ngsi_ld_data = {
         "id": "urn:ngsi-ld:TemperatureSensor:001",
         "type": "TemperatureSensor",
-        "name": {
-            "type": "Text",
-            "value": "Temperature Sensor 001"
-            },
-        # "temperature": {
-        #     "type": "Property",
-        #     "value": 25.5,
-        #     "unitCode": "CEL",
-        #     "observedAt": "2023-12-24T12:00:00Z"
-        #     },
-        # "turnOnRadiator": {
-        #     "type": "Command",
-        #     "description": "Command to turn on the radiator",
-        #     "value": "inactive"
-        #     },
-        # "location": {
-        #     "type": "GeoProperty",
-        #     "value": {
-        #         "type": "Point",
-        #         "coordinates": [-123.12345, 45.67890]
-        #         }
-        #     }
+        "description": "Temperature Sensor 001"
     }
     
     ngsi_ld_context = {
@@ -43,6 +21,49 @@ class TranslateWoTtoNGSILD():
         self.data = data 
         logging.info("Initializing translation from WoT to NGSI-LD.")
     
+    
+    def _find_property_value(self, prop):
+        """ A Mapping from Wot property type to NGSI-LD property value. """
+        property_type = prop.get("type")
+        conversion = None
+        if property_type=="number":
+            conversion = {
+                "type": "Property",
+                "value": 0,
+                "unitCode": find_unitCode(prop.get("unit")),
+                "description": prop.get("description", "")
+            }
+        elif property_type=="string":
+            conversion = {
+                "type": "Property",
+                "value": "",
+                "description": prop.get("description", "")
+            }
+        elif property_type=="boolean":
+            conversion = {
+                "type": "Property",
+                "value": False,
+                "observedAt": "2023-12-24T12:00:00Z",
+                "description": prop.get("description", "")
+            }
+        elif property_type=="array":
+            # in python you can save in this list anything
+            conversion = {
+                "type": "Property",
+                "value": [],
+                "description": prop.get("description", "")
+            }
+        elif property_type=="object":
+            # not supported yet
+            conversion = {
+                "type": "Property",
+                "value": {},
+                "description": prop.get("description", "")
+            }
+        else:
+            raise Exception("Wot type to NGSI-LD value could not be done.")
+        return conversion
+    
     def manage_properties(self):
         """ 
         A mapping from WoT properties to NGSI-LD properties -->
@@ -52,7 +73,7 @@ class TranslateWoTtoNGSILD():
         properties = self.data.get("properties")
         if properties is not None:
             for prop in properties:
-                self.ngsi_ld_data[prop] = find_value(properties.get(prop))
+                self.ngsi_ld_data[prop] = self._find_property_value(properties.get(prop))
 
     def manage_actions(self):
         """
@@ -107,10 +128,7 @@ class TranslateWoTtoNGSILD():
             {
                 "id": f"urn:ngsi-ld:{title}:{id_num}",
                 "type": self.data.get("title"),
-                "name": {
-                    "type": "Text",
-                    "value": self.data.get("description"),
-                },
+                "description": self.data.get("description", "")
             }
         )
         
@@ -135,7 +153,7 @@ class TranslateWoTtoNGSILD():
                 entity_property = properties.get(prop)
                 data_model_properties[prop] = {}
                 # optional fields
-                description = entity_property.get("description")
+                description = entity_property.get("description", "")
                 if description: data_model_properties[prop]["description"] = f"'{description}'"     # weird quotes it is a string message
                 fields = ["maximum", "minimum"]
                 for field in fields:
@@ -165,7 +183,7 @@ class TranslateWoTtoNGSILD():
         
         # generic info
         title = self.data.get("title")
-        description = self.data.get("description")
+        description = self.data.get("description", "")
         
         schemas = {
             title: {

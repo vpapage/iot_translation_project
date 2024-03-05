@@ -3,6 +3,8 @@ import yaml
 import logging
 from semantic_translation.translate_ngsild_to_wot import TranslateNGSILDtoWoT
 from semantic_translation.translate_wot_to_ngsild import TranslateWoTtoNGSILD
+from wotpy.wot.td import ThingDescription
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -38,6 +40,9 @@ class IoTModelTranslator():
         target_data = self.translation_class.translate()
         self.write_json_file(target_data, file_path)
         logging.info(f"Target's model data: {target_data}")
+        
+        if self.source_model=="NGSI-LD":
+            self.validate_wot_td(target_data)
 
     def translate_wot_to_ngsild_data_model_and_save_to(self, file_path):
         """ Translate the WoT data to the ngsi-ld information model format and save it to a specified file. 
@@ -51,6 +56,24 @@ class IoTModelTranslator():
         target_data = self.translation_class.data_model_generator()
         self.write_yaml_file(target_data, file_path)
         logging.info(f"Target data: {target_data}")
+
+    def validate_wot_td(self, data):
+        # ThingDescription.validate(doc=data) already done
+        json_td = ThingDescription(data)
+        thing = json_td.build_thing()
+        td_dict = json_td.to_dict()
+
+        def assert_same_keys(dict_a, dict_b):
+            assert sorted(list(dict_a.keys())) == sorted(list(dict_b.keys()))
+
+        assert thing.id == td_dict.get("id")
+        assert thing.title == td_dict.get("title")
+        assert thing.description == td_dict.get("description")
+        assert_same_keys(thing.properties, td_dict.get("properties", {}))
+        assert_same_keys(thing.actions, td_dict.get("actions", {}))
+        assert_same_keys(thing.events, td_dict.get("events", {}))
+        
+        print("Validation process successful!")
 
     def read_json_file(self, file_path):
         """ Reads a JSON file from a given file path and returns the data as a dictionary. """

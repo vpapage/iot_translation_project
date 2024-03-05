@@ -1,0 +1,57 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:wot:Building:store001",
+    "title": "Building",
+    "description": "",
+    "securityDefinitions": {
+        "no_sec": {
+            "scheme": "nosec"
+        }
+    },
+    "security": [
+        "no_sec"
+    ],
+    "properties": {
+        "category": {
+            "description": "",
+            "type": "array",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "http://PLACEHOLDER_IP/category"
+                }
+            ]
+        },
+        "address": {
+            "description": "",
+            "type": "string",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "http://PLACEHOLDER_IP/address"
+                }
+            ]
+        },
+        "verified": {
+            "description": "",
+            "type": "boolean",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "http://PLACEHOLDER_IP/verified"
+                }
+            ]
+        },
+        "name": {
+            "description": "",
+            "type": "string",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "http://PLACEHOLDER_IP/name"
+                }
+            ]
+        }
+    },
+    "actions": {}
+}

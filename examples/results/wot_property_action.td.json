@@ -1,0 +1,28 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:wot:TemperatureSensor:001",
+    "title": "TemperatureSensor",
+    "description": "",
+    "securityDefinitions": {
+        "no_sec": {
+            "scheme": "nosec"
+        }
+    },
+    "security": [
+        "no_sec"
+    ],
+    "properties": {
+        "temperature": {
+            "description": "",
+            "type": "number",
+            "init": "celsius",
+            "forms": [
+                {
+                    "contentType": "application/json",
+                    "href": "http://PLACEHOLDER_IP/temperature"
+                }
+            ]
+        }
+    },
+    "actions": {}
+}

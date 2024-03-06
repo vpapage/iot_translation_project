@@ -1,6 +1,6 @@
 import logging
 from semantic_translation.unit_measurement import find_unitCode
-from data.ngsild_datamodel_template import yaml_template
+from ngsild_datamodel_template import yaml_template
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

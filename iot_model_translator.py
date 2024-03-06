@@ -90,7 +90,7 @@ class IoTModelTranslator():
                 json.dump(data, file, ensure_ascii=False, indent=4)
         except Exception as e:
             raise Exception(f"An error occurred while writing to the file: {e}")
-        logging.info(f"Created succesfully: {file_path}")
+        logging.info(f"Created successfully: {file_path}")
         if file_path=="configuration.jsonld":
             logging.info("It is recommended to change the file name to something more model specific, eg. ngsi-entity.jsonld or wot-thing-description.td.jsonld")
 
@@ -111,6 +111,6 @@ class IoTModelTranslator():
                 file.write(target_yaml)        
         except Exception as e:
             raise Exception(f"An error occurred while writing to the file: {e}")
-        logging.info(f"The data model file created succesfully: {file_path}")
+        logging.info(f"The data model file created successfully: {file_path}")
         if file_path=="data-model.yaml":
             logging.info("It is recommended to change the file name to something more specific.")
